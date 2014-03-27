@@ -106,3 +106,23 @@ function displayextid_civicrm_caseTypes(&$caseTypes) {
 function displayextid_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _displayextid_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
+
+function displayextid_civicrm_summary( $contactID, &$content, &$contentPlacement = CRM_Utils_Hook::SUMMARY_BELOW )
+{
+  try { 
+    $result = civicrm_api3('Contact', 'getsingle', array('id' => $contactID));
+  
+    if (isset($result['external_identifier'])) {
+      $extId = '<div class=\"crm-summary-row\"><div class=\"crm-label\">External Identifier</div><div class=\"crm-content\"><span class=\"crm-contact-external_id\">'.$result['external_identifier']."</span></div></div>";
+    
+      $content .= '<script type="text/javascript">' . PHP_EOL;
+      $content .= 'cj( document ).ready(function() {' . PHP_EOL;
+      $content .= 'var parent_el_contact_id = cj("#contact-summary .crm-summary-block .crm-contact-contact_id").parent().parent();' . PHP_EOL;
+      $content .= 'parent_el_contact_id.before("'.$extId.'");' . PHP_EOL;
+      $content .= '});' . PHP_EOL;
+      $content .= '</script>' . PHP_EOL;
+    }
+  } catch (Exception $e) {
+    
+  }
+}
