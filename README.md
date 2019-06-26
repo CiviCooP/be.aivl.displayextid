@@ -1,3 +1,5 @@
+This extension is no longer required or maintained
+
 be.aivl.displayextid
 ====================
 
